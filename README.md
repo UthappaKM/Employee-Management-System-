@@ -646,7 +646,7 @@ This is an academic project, but suggestions and improvements are welcome!
 
 ## 📄 License
 
-This project is created for academic purposes as a Final Year Project.
+This project is created for academic purposes 
 
 ---
 
@@ -660,7 +660,7 @@ This project is created for academic purposes as a Final Year Project.
 
 ---
 
-## 🙏 Acknowledgments
+##  Acknowledgments
 
 - MongoDB Atlas for cloud database hosting
 - React and Node.js communities for excellent documentation
@@ -669,11 +669,11 @@ This project is created for academic purposes as a Final Year Project.
 
 ---
 
-## 📞 Support
+##  Support
 
 For any queries regarding this project:
 - Create an issue in this repository
-- Contact via email: your.email@example.com
+- Contact via email: kottangadauthappa@gmail.com
 
 ---
 
