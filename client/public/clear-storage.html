@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clear Browser Storage - EMS</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+    .container {
+      background: white;
+      padding: 40px;
+      border-radius: 10px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+      max-width: 500px;
+      text-align: center;
+    }
+    h1 {
+      color: #2c3e50;
+      margin-bottom: 20px;
+    }
+    p {
+      color: #666;
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+    .btn {
+      background: #667eea;
+      color: white;
+      border: none;
+      padding: 15px 30px;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      margin: 10px;
+      transition: background 0.3s;
+    }
+    .btn:hover {
+      background: #5568d3;
+    }
+    .success {
+      color: #27ae60;
+      font-weight: bold;
+      margin-top: 20px;
+      display: none;
+    }
+    .error {
+      color: #e74c3c;
+      margin-top: 20px;
+    }
+    .code {
+      background: #f4f4f4;
+      padding: 10px;
+      border-radius: 5px;
+      margin: 15px 0;
+      font-family: monospace;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🔧 Fix JWT Token Error</h1>
+    <p>If you're seeing "jwt malformed" or authentication errors, click the button below to clear your browser storage and fix the issue.</p>
+    
+    <button class="btn" onclick="clearStorage()">Clear Storage & Fix Error</button>
+    <br>
+    <button class="btn" onclick="goToLogin()">Go to Login Page</button>
+    
+    <div id="success" class="success">
+      ✅ Storage cleared successfully!<br>
+      Redirecting to login page...
+    </div>
+    
+    <div style="margin-top: 30px; border-top: 2px solid #eee; padding-top: 20px;">
+      <h3>Manual Method (Alternative)</h3>
+      <p>Open browser console (F12) and run:</p>
+      <div class="code">localStorage.clear()</div>
+      <p>Then refresh the page and login again.</p>
+    </div>
+  </div>
+
+  <script>
+    function clearStorage() {
+      try {
+        // Clear localStorage
+        localStorage.clear();
+        
+        // Clear sessionStorage
+        sessionStorage.clear();
+        
+        // Show success message
+        document.getElementById('success').style.display = 'block';
+        
+        // Redirect to login after 2 seconds
+        setTimeout(() => {
+          window.location.href = 'http://localhost:3001/login';
+        }, 2000);
+      } catch (error) {
+        alert('Error clearing storage: ' + error.message);
+      }
+    }
+    
+    function goToLogin() {
+      window.location.href = 'http://localhost:3001/login';
+    }
+    
+    // Auto-clear on load if ?auto=true is in URL
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('auto') === 'true') {
+      clearStorage();
+    }
+  </script>
+</body>
+</html>
