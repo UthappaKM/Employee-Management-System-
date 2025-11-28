@@ -78,6 +78,13 @@ const employeeSchema = new mongoose.Schema({
     relationship: String,
     phone: String
   },
+  bankDetails: {
+    accountHolderName: String,
+    accountNumber: String,
+    bankName: String,
+    ifscCode: String,
+    branch: String
+  },
   profileImage: {
     type: String,
     default: ''

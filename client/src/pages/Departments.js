@@ -87,7 +87,7 @@ const Departments = () => {
                 )}
                 <div className="department-info">
                   {dept.location && <div><strong>Location:</strong> {dept.location}</div>}
-                  {dept.budget && <div><strong>Budget:</strong> ${dept.budget.toLocaleString()}</div>}
+                  {dept.budget && <div><strong>Budget:</strong> ₹{dept.budget.toLocaleString()}</div>}
                   {dept.head && (
                     <div><strong>Head:</strong> {dept.head.firstName} {dept.head.lastName}</div>
                   )}

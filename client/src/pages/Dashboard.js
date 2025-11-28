@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
+import MyAttendance from '../components/MyAttendance';
 import { getEmployeeStats, getEmployees } from '../services/employeeService';
 import { getPerformanceStats, getPerformanceReviews } from '../services/performanceService';
+import salaryService from '../services/salaryService';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import './Dashboard.css';
@@ -11,6 +13,7 @@ const Dashboard = () => {
   const [performanceStats, setPerformanceStats] = useState(null);
   const [myProfile, setMyProfile] = useState(null);
   const [myReviews, setMyReviews] = useState([]);
+  const [mySalary, setMySalary] = useState(null);
   const [loading, setLoading] = useState(true);
   const { user, isManager } = useAuth();
   const navigate = useNavigate();
@@ -28,15 +31,28 @@ const Dashboard = () => {
 
         const perfStats = await getPerformanceStats();
         setPerformanceStats(perfStats);
-      } else {
-        // For regular employees, load their profile and reviews
-        const employees = await getEmployees();
-        if (employees && employees.length > 0) {
-          setMyProfile(employees[0]); // Backend returns only their profile
-        }
-        
+      }
+      
+      // Load profile for all users (including managers and admins who might also be employees)
+      const employees = await getEmployees();
+      if (employees && employees.length > 0) {
+        setMyProfile(employees[0]); // Backend returns only their profile
+      }
+      
+      // Load reviews if not a manager
+      if (!isManager()) {
         const reviews = await getPerformanceReviews();
         setMyReviews(reviews);
+      }
+
+      // Load salary details for employees
+      if (!isManager()) {
+        try {
+          const salary = await salaryService.getMySalary();
+          setMySalary(salary);
+        } catch (error) {
+          console.log('No salary record found');
+        }
       }
     } catch (error) {
       console.error('Error loading dashboard data:', error);
@@ -62,6 +78,9 @@ const Dashboard = () => {
       <div className="container dashboard">
         <h1>Dashboard</h1>
         <p className="welcome-text">Welcome back, {user?.name}!</p>
+
+        {/* My Attendance Widget for all users with employee profile */}
+        {myProfile && <MyAttendance employeeId={myProfile._id} />}
 
         {/* Show stats only for Admin/Manager */}
         {isManager() && employeeStats && (
@@ -135,77 +154,60 @@ const Dashboard = () => {
         {!isManager() && (
           <>
             {myProfile ? (
-              <div className="employee-profile-section">
-                <div className="card">
-                  <h2>My Profile</h2>
-                  <div className="profile-grid">
-                    <div className="profile-item">
-                      <label>Full Name:</label>
-                      <span>{myProfile.firstName} {myProfile.lastName}</span>
-                    </div>
-                    <div className="profile-item">
-                      <label>Email:</label>
-                      <span>{myProfile.email}</span>
-                    </div>
-                    <div className="profile-item">
-                      <label>Phone:</label>
-                      <span>{myProfile.phone || 'Not provided'}</span>
-                    </div>
-                    <div className="profile-item">
-                      <label>Position:</label>
-                      <span>{myProfile.position}</span>
-                    </div>
-                    <div className="profile-item">
-                      <label>Department:</label>
-                      <span>{myProfile.department?.name || 'Not assigned'}</span>
-                    </div>
-                    <div className="profile-item">
-                      <label>Manager:</label>
-                      <span>
-                        {myProfile.manager 
-                          ? `${myProfile.manager.firstName} ${myProfile.manager.lastName}`
-                          : 'Not assigned'}
-                      </span>
-                    </div>
-                    <div className="profile-item">
-                      <label>Hire Date:</label>
-                      <span>{myProfile.hireDate ? new Date(myProfile.hireDate).toLocaleDateString() : 'N/A'}</span>
-                    </div>
-                    <div className="profile-item">
-                      <label>Status:</label>
-                      <span className={`badge ${myProfile.status === 'active' ? 'badge-success' : myProfile.status === 'on-leave' ? 'badge-warning' : 'badge-danger'}`}>
-                        {myProfile.status}
-                      </span>
-                    </div>
-                    <div className="profile-item">
-                      <label>Salary:</label>
-                      <span>${myProfile.salary ? myProfile.salary.toLocaleString() : 'N/A'}</span>
-                    </div>
-                    <div className="profile-item full-width">
-                      <label>Address:</label>
-                      <span>
-                        {myProfile.address && (myProfile.address.street || myProfile.address.city || myProfile.address.state)
-                          ? `${myProfile.address.street ? myProfile.address.street + ', ' : ''}${myProfile.address.city ? myProfile.address.city + ', ' : ''}${myProfile.address.state ? myProfile.address.state + ' ' : ''}${myProfile.address.zipCode || ''}${myProfile.address.country ? ', ' + myProfile.address.country : ''}`
-                          : 'Not provided'}
-                      </span>
-                    </div>
+              <div className="employee-dashboard-section">
+                {/* Quick Stats Overview */}
+                <div className="stats-grid" style={{ marginBottom: '2rem' }}>
+                  <div className="stat-card">
+                    <h3>Position</h3>
+                    <div className="stat-value" style={{ fontSize: '1.2rem' }}>{myProfile.position}</div>
+                    <small style={{ color: '#7f8c8d' }}>{myProfile.department?.name || 'Not assigned'}</small>
                   </div>
-                  <div style={{ marginTop: '20px' }}>
-                    <button 
-                      className="btn btn-primary"
-                      onClick={() => navigate(`/employees/${myProfile._id}`)}
-                    >
-                      View Full Profile
-                    </button>
+
+                  <div className="stat-card info">
+                    <h3>Employment Status</h3>
+                    <div className="stat-value" style={{ fontSize: '1rem', display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '50px' }}>
+                      <span className={`badge ${myProfile.status === 'active' ? 'badge-success' : myProfile.status === 'on-leave' ? 'badge-warning' : 'badge-danger'}`} style={{ textTransform: 'uppercase', fontSize: '0.9rem', padding: '8px 16px' }}>
+                        {myProfile.status.replace('-', ' ')}
+                      </span>
+                    </div>
+                    <small style={{ color: '#7f8c8d', display: 'block', marginTop: '8px' }}>
+                      {myProfile.hireDate 
+                        ? `Employed for ${Math.floor((new Date() - new Date(myProfile.hireDate)) / (1000 * 60 * 60 * 24))} days`
+                        : 'Hire date not available'}
+                    </small>
+                  </div>
+
+                  {mySalary && (
+                    <div className="stat-card success">
+                      <h3>Net Salary</h3>
+                      <div className="stat-value" style={{ color: '#4caf50' }}>₹{mySalary.netSalary.toLocaleString()}</div>
+                      <small style={{ color: '#7f8c8d' }}>Per month</small>
+                    </div>
+                  )}
+
+                  <div className="stat-card warning">
+                    <h3>Total Reviews</h3>
+                    <div className="stat-value">{myReviews.length}</div>
+                    <small style={{ color: '#7f8c8d' }}>
+                      Avg: {myReviews.length > 0 
+                        ? (myReviews.reduce((sum, r) => sum + r.overallRating, 0) / myReviews.length).toFixed(1)
+                        : 'N/A'} ⭐
+                    </small>
                   </div>
                 </div>
 
-                {/* Performance Reviews Section */}
-                <div className="card" style={{ marginTop: '20px' }}>
-                  <h2>My Performance Reviews</h2>
-                  {myReviews.length === 0 ? (
-                    <p style={{ color: '#666', marginTop: '10px' }}>No performance reviews yet.</p>
-                  ) : (
+                {/* Recent Performance Reviews - Show only latest 3 */}
+                {myReviews.length > 0 && (
+                  <div className="card" style={{ marginTop: '20px' }}>
+                    <div className="card-header">
+                      <h2>Recent Performance Reviews</h2>
+                      <button 
+                        className="btn btn-secondary"
+                        onClick={() => navigate('/performance')}
+                      >
+                        View All
+                      </button>
+                    </div>
                     <div className="table-responsive">
                       <table>
                         <thead>
@@ -214,11 +216,10 @@ const Dashboard = () => {
                             <th>Rating</th>
                             <th>Reviewer</th>
                             <th>Date</th>
-                            <th>Status</th>
                           </tr>
                         </thead>
                         <tbody>
-                          {myReviews.map((review) => (
+                          {myReviews.slice(0, 3).map((review) => (
                             <tr key={review._id}>
                               <td>{review.reviewPeriod}</td>
                               <td>
@@ -230,42 +231,13 @@ const Dashboard = () => {
                               </td>
                               <td>{review.reviewer?.name || 'N/A'}</td>
                               <td>{new Date(review.reviewDate).toLocaleDateString()}</td>
-                              <td>
-                                <span className={`badge ${review.status === 'completed' ? 'badge-success' : 'badge-warning'}`}>
-                                  {review.status}
-                                </span>
-                              </td>
                             </tr>
                           ))}
                         </tbody>
                       </table>
                     </div>
-                  )}
-                </div>
-
-                {/* Quick Stats for Employee */}
-                <div className="stats-grid" style={{ marginTop: '20px' }}>
-                  <div className="stat-card info">
-                    <h3>Total Reviews</h3>
-                    <div className="stat-value">{myReviews.length}</div>
                   </div>
-                  <div className="stat-card success">
-                    <h3>Average Rating</h3>
-                    <div className="stat-value">
-                      {myReviews.length > 0 
-                        ? (myReviews.reduce((sum, r) => sum + r.overallRating, 0) / myReviews.length).toFixed(1)
-                        : 'N/A'}
-                    </div>
-                  </div>
-                  <div className="stat-card warning">
-                    <h3>Days Employed</h3>
-                    <div className="stat-value">
-                      {myProfile.hireDate 
-                        ? Math.floor((new Date() - new Date(myProfile.hireDate)) / (1000 * 60 * 60 * 24))
-                        : 'N/A'}
-                    </div>
-                  </div>
-                </div>
+                )}
               </div>
             ) : (
               <div className="card">

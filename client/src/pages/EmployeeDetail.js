@@ -95,7 +95,7 @@ const EmployeeDetail = () => {
             </div>
             <div className="detail-item">
               <strong>Salary:</strong>
-              <span>{employee.salary ? `$${employee.salary.toLocaleString()}` : 'N/A'}</span>
+              <span>{employee.salary ? `₹${employee.salary.toLocaleString()}` : 'N/A'}</span>
             </div>
           </div>
 

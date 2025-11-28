@@ -178,6 +178,57 @@
   font-weight: 700;
 }
 
+.department-section .card {
+  overflow: visible;
+}
+
+.department-section table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin-top: 0;
+}
+
+.department-section table thead {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.department-section table th {
+  padding: 1.25rem 1.5rem;
+  text-align: left;
+  color: white !important;
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  background: transparent;
+}
+
+.department-section table th:first-child {
+  border-top-left-radius: 12px;
+}
+
+.department-section table th:last-child {
+  border-top-right-radius: 12px;
+}
+
+.department-section table td {
+  color: #2c3e50;
+  font-weight: 500;
+  font-size: 1rem;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid #ecf0f1;
+}
+
+.department-section table tbody tr {
+  background: white;
+  transition: all 0.2s ease;
+}
+
+.department-section table tbody tr:hover {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+}
+
 .card {
   background: white;
   border-radius: 16px;
@@ -240,17 +291,23 @@ table {
 }
 
 thead {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
 }
 
 th {
   padding: 1.25rem 1.5rem;
   text-align: left;
-  color: white;
+  color: white !important;
   font-weight: 600;
   font-size: 0.9rem;
   text-transform: uppercase;
   letter-spacing: 0.8px;
+  background: transparent !important;
+}
+
+th:hover {
+  background: transparent !important;
+  color: white !important;
 }
 
 th:first-child {
@@ -266,6 +323,11 @@ td {
   border-bottom: 1px solid #ecf0f1;
   color: #2c3e50;
   font-size: 0.95rem;
+  font-weight: 500;
+}
+
+td:hover {
+  color: #2c3e50 !important;
 }
 
 tbody tr {
@@ -274,8 +336,12 @@ tbody tr {
 }
 
 tbody tr:hover {
-  background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%) !important;
   transform: scale(1.01);
+}
+
+tbody tr:hover td {
+  background: transparent !important;
 }
 
 .table-responsive {

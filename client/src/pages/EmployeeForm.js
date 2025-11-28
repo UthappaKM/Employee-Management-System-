@@ -28,6 +28,13 @@ const EmployeeForm = () => {
       zipCode: '',
       country: ''
     },
+    bankDetails: {
+      accountHolderName: '',
+      accountNumber: '',
+      bankName: '',
+      ifscCode: '',
+      branch: ''
+    },
     // User account fields
     createUserAccount: true,
     userRole: 'employee',
@@ -74,6 +81,13 @@ const EmployeeForm = () => {
           state: '',
           zipCode: '',
           country: ''
+        },
+        bankDetails: data.bankDetails || {
+          accountHolderName: '',
+          accountNumber: '',
+          bankName: '',
+          ifscCode: '',
+          branch: ''
         }
       });
     } catch (error) {
@@ -91,6 +105,15 @@ const EmployeeForm = () => {
         address: {
           ...formData.address,
           [addressField]: value
+        }
+      });
+    } else if (name.startsWith('bankDetails.')) {
+      const bankField = name.split('.')[1];
+      setFormData({
+        ...formData,
+        bankDetails: {
+          ...formData.bankDetails,
+          [bankField]: value
         }
       });
     } else {
@@ -351,6 +374,67 @@ const EmployeeForm = () => {
                   type="text"
                   name="address.country"
                   value={formData.address.country}
+                  onChange={onChange}
+                  className="form-control"
+                />
+              </div>
+            </div>
+
+            <h3>Bank Details</h3>
+            <div className="form-row">
+              <div className="form-group">
+                <label>Account Holder Name</label>
+                <input
+                  type="text"
+                  name="bankDetails.accountHolderName"
+                  value={formData.bankDetails.accountHolderName}
+                  onChange={onChange}
+                  className="form-control"
+                  placeholder="As per bank records"
+                />
+              </div>
+
+              <div className="form-group">
+                <label>Account Number</label>
+                <input
+                  type="text"
+                  name="bankDetails.accountNumber"
+                  value={formData.bankDetails.accountNumber}
+                  onChange={onChange}
+                  className="form-control"
+                />
+              </div>
+            </div>
+
+            <div className="form-row">
+              <div className="form-group">
+                <label>Bank Name</label>
+                <input
+                  type="text"
+                  name="bankDetails.bankName"
+                  value={formData.bankDetails.bankName}
+                  onChange={onChange}
+                  className="form-control"
+                />
+              </div>
+
+              <div className="form-group">
+                <label>IFSC Code</label>
+                <input
+                  type="text"
+                  name="bankDetails.ifscCode"
+                  value={formData.bankDetails.ifscCode}
+                  onChange={onChange}
+                  className="form-control"
+                />
+              </div>
+
+              <div className="form-group">
+                <label>Branch</label>
+                <input
+                  type="text"
+                  name="bankDetails.branch"
+                  value={formData.bankDetails.branch}
                   onChange={onChange}
                   className="form-control"
                 />

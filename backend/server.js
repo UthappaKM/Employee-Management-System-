@@ -34,6 +34,9 @@ app.use('/api/employees', require('./routes/employees'));
 app.use('/api/employees', require('./routes/employeeWithUser')); // Employee with user account creation
 app.use('/api/performance', require('./routes/performance'));
 app.use('/api/departments', require('./routes/departments'));
+app.use('/api/attendance', require('./routes/attendance'));
+app.use('/api/salary', require('./routes/salary'));
+app.use('/api/payroll', require('./routes/payroll'));
 
 // Root route
 app.get('/', (req, res) => {

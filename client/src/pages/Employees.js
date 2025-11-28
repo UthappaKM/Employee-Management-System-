@@ -13,7 +13,7 @@ const Employees = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState('');
   const [filterDepartment, setFilterDepartment] = useState('');
-  const { isManager } = useAuth();
+  const { isManager, user } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -183,7 +183,7 @@ const Employees = () => {
                         >
                           View
                         </button>
-                        {isManager() && (
+                        {isManager() && employee.email !== user?.email && (
                           <>
                             <button
                               className="btn btn-sm btn-secondary"

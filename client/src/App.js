@@ -14,6 +14,11 @@ import Departments from './pages/Departments';
 import DepartmentForm from './pages/DepartmentForm';
 import Performance from './pages/Performance';
 import Users from './pages/Users';
+import Attendance from './pages/Attendance';
+import Salary from './pages/Salary';
+import Payroll from './pages/Payroll';
+import MyProfile from './pages/MyProfile';
+import MySalary from './pages/MySalary';
 
 function App() {
   return (
@@ -100,6 +105,56 @@ function App() {
             element={
               <PrivateRoute managerOnly>
                 <Performance />
+              </PrivateRoute>
+            }
+          />
+
+          {/* Attendance Routes */}
+          <Route
+            path="/attendance"
+            element={
+              <PrivateRoute>
+                <Attendance />
+              </PrivateRoute>
+            }
+          />
+
+          {/* My Profile Route (Employees only) */}
+          <Route
+            path="/my-profile"
+            element={
+              <PrivateRoute>
+                <MyProfile />
+              </PrivateRoute>
+            }
+          />
+
+          {/* My Salary Route (Employees only) */}
+          <Route
+            path="/my-salary"
+            element={
+              <PrivateRoute>
+                <MySalary />
+              </PrivateRoute>
+            }
+          />
+
+          {/* Salary Routes */}
+          <Route
+            path="/salary"
+            element={
+              <PrivateRoute>
+                <Salary />
+              </PrivateRoute>
+            }
+          />
+
+          {/* Payroll Routes */}
+          <Route
+            path="/payroll"
+            element={
+              <PrivateRoute>
+                <Payroll />
               </PrivateRoute>
             }
           />

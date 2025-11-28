@@ -51,8 +51,11 @@
 }
 
 .users-table thead {
-  background-color: #34495e;
-  color: white;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  color: white !important;
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
 
 .users-table th {
@@ -62,6 +65,13 @@
   font-size: 0.875rem;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  color: white !important;
+  background: transparent !important;
+}
+
+.users-table th:hover {
+  background: transparent !important;
+  color: white !important;
 }
 
 .users-table td {
@@ -69,8 +79,16 @@
   border-bottom: 1px solid #ecf0f1;
 }
 
+.users-table td:hover {
+  background: transparent !important;
+}
+
 .users-table tbody tr:hover {
-  background-color: #f8f9fa;
+  background-color: #f8f9fa !important;
+}
+
+.users-table tbody tr:hover td {
+  background: transparent !important;
 }
 
 .role-badge {

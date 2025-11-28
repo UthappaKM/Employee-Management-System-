@@ -4,7 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import './Navbar.css';
 
 const Navbar = () => {
-  const { user, logoutUser, isManager, isAdmin } = useAuth();
+  const { user, logoutUser, isManager, isAdmin, isHR } = useAuth();
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -23,9 +23,34 @@ const Navbar = () => {
           <li>
             <Link to="/dashboard">Dashboard</Link>
           </li>
+          {!isManager() && (
+            <>
+              <li>
+                <Link to="/my-profile">My Profile</Link>
+              </li>
+              <li>
+                <Link to="/my-salary">My Salary</Link>
+              </li>
+            </>
+          )}
+          {isManager() && (
+            <li>
+              <Link to="/employees">Employees</Link>
+            </li>
+          )}
           <li>
-            <Link to="/employees">Employees</Link>
+            <Link to="/attendance">Attendance</Link>
           </li>
+          {(isHR() || isAdmin()) && (
+            <>
+              <li>
+                <Link to="/salary">Salary</Link>
+              </li>
+              <li>
+                <Link to="/payroll">Payroll</Link>
+              </li>
+            </>
+          )}
           {isAdmin() && (
             <li>
               <Link to="/users">Users</Link>

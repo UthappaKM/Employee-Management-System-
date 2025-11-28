@@ -25,3 +25,9 @@ Thumbs.db
 
 # Testing
 coverage/
+
+# Documentation files
+*.md
+!README.md
+*.txt
+INSTALLATION_CHECKLIST.txt

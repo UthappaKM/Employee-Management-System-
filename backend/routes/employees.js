@@ -144,6 +144,11 @@ router.put('/:id', [
       return res.status(404).json({ message: 'Employee not found' });
     }
 
+    // Prevent users from editing their own employee record
+    if (employee.email === req.user.email) {
+      return res.status(403).json({ message: 'You cannot edit your own employee record.' });
+    }
+
     // Manager can only edit employees in their department
     if (req.user.role === 'manager') {
       const managerRecord = await Employee.findOne({ email: req.user.email });

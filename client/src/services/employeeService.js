@@ -36,3 +36,15 @@ export const getEmployeeStats = async () => {
   const response = await api.get('/employees/stats/overview');
   return response.data;
 };
+
+// Default export for backwards compatibility
+const employeeService = {
+  getEmployees,
+  getEmployeeById,
+  createEmployee,
+  updateEmployee,
+  deleteEmployee,
+  getEmployeeStats
+};
+
+export default employeeService;
