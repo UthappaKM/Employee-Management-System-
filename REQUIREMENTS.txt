@@ -1,0 +1,325 @@
+# Employee Management System - Installation Requirements
+
+## System Requirements
+
+### Required Software
+- Node.js >= 14.0.0 (Recommended: 18.x or 20.x LTS)
+- npm >= 6.0.0 (comes with Node.js)
+- MongoDB Atlas Account (Free tier available)
+- Git (for version control)
+
+### Recommended Software
+- Visual Studio Code or any code editor
+- MongoDB Compass (GUI for database)
+- Postman (API testing)
+
+---
+
+## Installation Steps
+
+### 1. Install Node.js
+Download and install from: https://nodejs.org/
+- Windows: Download the Windows Installer (.msi)
+- Verify installation:
+  ```cmd
+  node --version
+  npm --version
+  ```
+
+### 2. Clone/Download Project
+```cmd
+cd C:\
+git clone <your-repo-url> EcomClone
+cd EcomClone
+```
+
+### 3. Install Backend Dependencies
+These will be installed automatically when you run `npm install` in the root directory:
+
+**Production Dependencies:**
+- express@^4.18.2 - Web framework
+- mongoose@^7.5.0 - MongoDB ODM
+- dotenv@^16.3.1 - Environment variables
+- bcryptjs@^2.4.3 - Password hashing
+- jsonwebtoken@^9.0.2 - JWT authentication
+- cors@^2.8.5 - CORS middleware
+- express-validator@^7.0.1 - Input validation
+- multer@^1.4.5-lts.1 - File uploads
+
+**Development Dependencies:**
+- nodemon@^3.0.1 - Auto-restart server
+- concurrently@^8.2.1 - Run multiple commands
+
+### 4. Install Frontend Dependencies
+These will be installed automatically when you run `npm install` in the client directory:
+
+**Main Dependencies:**
+- react@^18.2.0 - UI library
+- react-dom@^18.2.0 - React DOM
+- react-router-dom@^6.16.0 - Routing
+- react-scripts@5.0.1 - Build tools
+- axios@^1.5.0 - HTTP client
+
+---
+
+## Quick Installation Commands
+
+### Option 1: Install Everything at Once
+```cmd
+npm run install-all
+```
+
+### Option 2: Install Separately
+```cmd
+# Install backend dependencies
+npm install
+
+# Install frontend dependencies
+cd client
+npm install
+cd ..
+```
+
+---
+
+## Backend Dependencies Detailed
+
+### Core Dependencies
+```json
+{
+  "express": "^4.18.2",           // Web server framework
+  "mongoose": "^7.5.0",           // MongoDB object modeling
+  "dotenv": "^16.3.1",            // Environment variable management
+  "cors": "^2.8.5"                // Cross-origin resource sharing
+}
+```
+
+### Security Dependencies
+```json
+{
+  "bcryptjs": "^2.4.3",           // Password encryption
+  "jsonwebtoken": "^9.0.2",       // JWT token generation/verification
+  "express-validator": "^7.0.1"   // Input validation and sanitization
+}
+```
+
+### Utility Dependencies
+```json
+{
+  "multer": "^1.4.5-lts.1"        // File upload handling
+}
+```
+
+### Development Dependencies
+```json
+{
+  "nodemon": "^3.0.1",            // Auto-restart on file changes
+  "concurrently": "^8.2.1"        // Run multiple npm scripts
+}
+```
+
+---
+
+## Frontend Dependencies Detailed
+
+### React Core
+```json
+{
+  "react": "^18.2.0",             // React library
+  "react-dom": "^18.2.0",         // React DOM rendering
+  "react-scripts": "5.0.1"        // Create React App scripts
+}
+```
+
+### Routing & HTTP
+```json
+{
+  "react-router-dom": "^6.16.0",  // Client-side routing
+  "axios": "^1.5.0"               // HTTP requests
+}
+```
+
+---
+
+## Verification Commands
+
+After installation, verify everything is working:
+
+### Check Node & NPM versions
+```cmd
+node --version    # Should show v14.x or higher
+npm --version     # Should show v6.x or higher
+```
+
+### Check Backend Dependencies
+```cmd
+npm list --depth=0
+```
+
+### Check Frontend Dependencies
+```cmd
+cd client
+npm list --depth=0
+cd ..
+```
+
+### Test Backend Server
+```cmd
+npm run server
+```
+You should see: "Server running in development mode on port 5000"
+
+### Test Full Stack
+```cmd
+npm run dev
+```
+You should see both backend and frontend starting
+
+---
+
+## MongoDB Atlas Setup
+
+### Requirements
+- Email account
+- Internet connection
+- IP address to whitelist
+
+### Steps
+1. Go to https://cloud.mongodb.com/
+2. Sign up for free account
+3. Create free M0 cluster
+4. Create database user
+5. Whitelist IP address
+6. Get connection string
+7. Update .env file
+
+---
+
+## Optional Tools
+
+### MongoDB Compass (Database GUI)
+Download: https://www.mongodb.com/try/download/compass
+- Visual interface for MongoDB
+- Query builder
+- Data visualization
+
+### Postman (API Testing)
+Download: https://www.postman.com/downloads/
+- Test API endpoints
+- Save request collections
+- Environment management
+
+### VS Code Extensions
+- ESLint - Code linting
+- Prettier - Code formatting
+- ES7+ React snippets
+- MongoDB for VS Code
+- Thunder Client - API testing in VS Code
+
+---
+
+## Troubleshooting
+
+### If npm install fails:
+```cmd
+# Clear npm cache
+npm cache clean --force
+
+# Delete node_modules and package-lock.json
+rmdir /s /q node_modules
+del package-lock.json
+
+# Reinstall
+npm install
+```
+
+### If you get permission errors:
+Run Command Prompt as Administrator
+
+### If ports are already in use:
+```cmd
+# Check what's using port 5000
+netstat -ano | findstr :5000
+
+# Kill the process (replace PID)
+taskkill /PID <PID> /F
+```
+
+---
+
+## Environment Variables Required
+
+Create `.env` file in root directory:
+```env
+MONGO_URI=mongodb+srv://root:root@emp-management.ewvvtkn.mongodb.net/employee_management?retryWrites=true&w=majority
+JWT_SECRET=your_super_secret_jwt_key_here
+PORT=5000
+NODE_ENV=development
+CLIENT_URL=http://localhost:3000
+```
+
+---
+
+## Build & Deploy Requirements
+
+### For Production Build
+```cmd
+cd client
+npm run build
+```
+
+### For Deployment (Heroku)
+- Heroku CLI
+- Git
+- Heroku account
+
+### For Deployment (Vercel/Netlify)
+- Vercel/Netlify CLI or GitHub integration
+- Git repository
+
+---
+
+## Summary Checklist
+
+- [ ] Node.js installed (v14+)
+- [ ] npm installed (v6+)
+- [ ] Git installed
+- [ ] MongoDB Atlas account created
+- [ ] Cluster created in MongoDB Atlas
+- [ ] Database user created
+- [ ] IP whitelisted in MongoDB Atlas
+- [ ] Connection string obtained
+- [ ] .env file configured
+- [ ] Backend dependencies installed (`npm install`)
+- [ ] Frontend dependencies installed (`cd client && npm install`)
+- [ ] Server starts successfully (`npm run dev`)
+- [ ] Can access frontend (http://localhost:3000)
+- [ ] Can access backend (http://localhost:5000)
+
+---
+
+## Quick Reference
+
+### Download Links
+- Node.js: https://nodejs.org/
+- MongoDB Atlas: https://cloud.mongodb.com/
+- Git: https://git-scm.com/downloads
+- VS Code: https://code.visualstudio.com/
+- MongoDB Compass: https://www.mongodb.com/try/download/compass
+- Postman: https://www.postman.com/downloads/
+
+### Documentation
+- Node.js Docs: https://nodejs.org/docs/
+- Express Docs: https://expressjs.com/
+- React Docs: https://react.dev/
+- MongoDB Docs: https://docs.mongodb.com/
+- Mongoose Docs: https://mongoosejs.com/
+
+---
+
+## Support
+
+For detailed setup instructions, see:
+- GETTING_STARTED.md
+- MONGODB_SETUP.md
+- README.md

@@ -19,6 +19,10 @@ import Salary from './pages/Salary';
 import Payroll from './pages/Payroll';
 import MyProfile from './pages/MyProfile';
 import MySalary from './pages/MySalary';
+import MyLeaves from './pages/MyLeaves';
+import LeaveApprovals from './pages/LeaveApprovals';
+import LeaveManagement from './pages/LeaveManagement';
+import ChangePassword from './pages/ChangePassword';
 
 function App() {
   return (
@@ -135,6 +139,42 @@ function App() {
             element={
               <PrivateRoute>
                 <MySalary />
+              </PrivateRoute>
+            }
+          />
+
+          {/* Leave Routes */}
+          <Route
+            path="/my-leaves"
+            element={
+              <PrivateRoute>
+                <MyLeaves />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/leave-approvals"
+            element={
+              <PrivateRoute managerOnly>
+                <LeaveApprovals />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/leave-management"
+            element={
+              <PrivateRoute hrOnly>
+                <LeaveManagement />
+              </PrivateRoute>
+            }
+          />
+
+          {/* Change Password Route (All users) */}
+          <Route
+            path="/change-password"
+            element={
+              <PrivateRoute>
+                <ChangePassword />
               </PrivateRoute>
             }
           />

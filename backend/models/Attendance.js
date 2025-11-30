@@ -23,6 +23,24 @@ const attendanceSchema = new mongoose.Schema({
     enum: ['Present', 'Absent', 'Late', 'Half Day', 'Leave'],
     default: 'Absent'
   },
+  isLeave: {
+    type: Boolean,
+    default: false
+  },
+  leaveType: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'LeaveType',
+    default: null
+  },
+  isHalfDay: {
+    type: Boolean,
+    default: false
+  },
+  halfDaySession: {
+    type: String,
+    enum: ['morning', 'afternoon', null],
+    default: null
+  },
   workHours: {
     type: Number,
     default: 0

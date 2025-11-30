@@ -37,6 +37,9 @@ app.use('/api/departments', require('./routes/departments'));
 app.use('/api/attendance', require('./routes/attendance'));
 app.use('/api/salary', require('./routes/salary'));
 app.use('/api/payroll', require('./routes/payroll'));
+app.use('/api/leave-types', require('./routes/leaveTypes'));
+app.use('/api/leave-balance', require('./routes/leaveBalance'));
+app.use('/api/leave-requests', require('./routes/leaveRequests'));
 
 // Root route
 app.get('/', (req, res) => {

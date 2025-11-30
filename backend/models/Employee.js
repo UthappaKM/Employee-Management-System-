@@ -1,6 +1,11 @@
 const mongoose = require('mongoose');
 
 const employeeSchema = new mongoose.Schema({
+  employeeId: {
+    type: String,
+    unique: true,
+    trim: true
+  },
   firstName: {
     type: String,
     required: [true, 'Please provide first name'],
@@ -102,6 +107,48 @@ const employeeSchema = new mongoose.Schema({
 // Update the updatedAt timestamp before saving
 employeeSchema.pre('save', function(next) {
   this.updatedAt = Date.now();
+  next();
+});
+
+// Auto-generate employee ID before saving
+employeeSchema.pre('save', async function(next) {
+  if (!this.employeeId && this.department) {
+    try {
+      // Get department to access its code
+      const Department = mongoose.model('Department');
+      const dept = await Department.findById(this.department);
+      
+      if (dept) {
+        // Get department code (e.g., "ENG" for Engineering)
+        const deptCode = dept.code || dept.name.substring(0, 3).toUpperCase();
+        
+        // Find the last employee in this department
+        const lastEmployee = await this.constructor
+          .findOne({ department: this.department })
+          .sort({ employeeId: -1 })
+          .select('employeeId');
+        
+        let nextNumber = 1;
+        if (lastEmployee && lastEmployee.employeeId) {
+          // Extract the number from the last employee ID (e.g., "ENG-005" -> 5)
+          const match = lastEmployee.employeeId.match(/\d+$/);
+          if (match) {
+            nextNumber = parseInt(match[0]) + 1;
+          }
+        }
+        
+        // Generate new employee ID (e.g., "ENG-001", "ENG-002")
+        this.employeeId = `${deptCode}-${String(nextNumber).padStart(3, '0')}`;
+      } else {
+        // Fallback if department not found
+        this.employeeId = `EMP-${String(Date.now()).slice(-6)}`;
+      }
+    } catch (error) {
+      console.error('Error generating employee ID:', error);
+      // Fallback to timestamp-based ID
+      this.employeeId = `EMP-${String(Date.now()).slice(-6)}`;
+    }
+  }
   next();
 });
 

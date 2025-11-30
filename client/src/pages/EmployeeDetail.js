@@ -66,13 +66,24 @@ const EmployeeDetail = () => {
 
         <div className="card">
           <div className="detail-section">
-            <h2>{employee.firstName} {employee.lastName}</h2>
+            <div>
+              <h2>{employee.firstName} {employee.lastName}</h2>
+              {employee.employeeId && (
+                <p className="employee-id-badge">ID: {employee.employeeId}</p>
+              )}
+            </div>
             <span className={`badge badge-${employee.status === 'active' ? 'success' : 'danger'}`}>
               {employee.status}
             </span>
           </div>
 
           <div className="detail-grid">
+            {employee.employeeId && (
+              <div className="detail-item">
+                <strong>Employee ID:</strong>
+                <span className="highlight-text">{employee.employeeId}</span>
+              </div>
+            )}
             <div className="detail-item">
               <strong>Email:</strong>
               <span>{employee.email}</span>
